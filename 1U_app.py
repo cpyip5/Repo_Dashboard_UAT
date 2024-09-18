@@ -1,10 +1,13 @@
 import streamlit as st
 import sqlite3
 from datetime import date
+import os
+
+db_name='db/tradingdb.db'
 
 # 連接到 SQLite 資料庫
 def connect_db():
-    conn = sqlite3.connect('db/tradingdb.db')
+    conn = sqlite3.connect(db_name)
     return conn, conn.cursor()
 
 # 插入數據到 'test' 表格
@@ -53,3 +56,8 @@ if data:
         st.write(f'Date: {row[0]}, mum_bo: {row[1]}, qqq: {row[2]}, mum_saving: {row[3]}')
 else:
     st.write('尚未有數據')
+
+
+if os.path.exists(db_name):
+    with open(db_name, 'rb') as f:
+        st.download_button(label="Download Database", data=f, file_name="tradingdb.db")
