@@ -5,7 +5,7 @@ conn = sqlite3.connect('tradingdb.db')
 cursor = conn.cursor()
 
 # 執行 SQL 查詢
-table_name='momentum_stocks'
+table_name='test'
 cursor.execute(f"SELECT * FROM {table_name}")
 
 # 獲取並列印所有記錄
