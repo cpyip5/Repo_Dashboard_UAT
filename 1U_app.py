@@ -61,3 +61,17 @@ else:
 if os.path.exists(db_name):
     with open(db_name, 'rb') as f:
         st.download_button(label="Download Database", data=f, file_name="tradingdb.db")
+
+
+################# Add display OS part
+import os
+import streamlit as st
+
+# 獲取作業系統名稱
+os_name = os.name  # 會回傳 'posix'（Linux/Unix/macOS）或 'nt'（Windows）
+
+# 獲取詳細的作業系統資訊
+platform_info = os.uname() if os.name == 'posix' else os.sys.platform
+
+st.write(f"作業系統名稱: {os_name}")
+st.write(f"作業系統詳細資訊: {platform_info}")
