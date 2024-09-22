@@ -64,14 +64,26 @@ if os.path.exists(db_name):
 
 
 ################# Add display OS part
-import os
 import streamlit as st
+import subprocess
+import shutil
+from datetime import datetime
 
-# 獲取作業系統名稱
-os_name = os.name  # 會回傳 'posix'（Linux/Unix/macOS）或 'nt'（Windows）
+def upload_to_github():
+    # 資料庫原始檔案名稱
+    original_db = 'db/tradingdb.db'
+    
+    # 生成時間戳記
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    new_db_name = f"db/tradingdb_{timestamp}.db"
+    
+    # 複製並重命名資料庫檔案
+    shutil.copy(original_db, new_db_name)
+    
+    # 使用 git 指令將帶有時間戳記的新資料庫檔案推送到 GitHub
+    subprocess.run(['git', 'add', new_db_name])
+    subprocess.run(['git', 'commit', '-m', f'Update database with timestamp: {new_db_name}'])
+    subprocess.run(['git', 'push', 'origin', 'main'])  # 或是你的分支名稱
 
-# 獲取詳細的作業系統資訊
-platform_info = os.uname() if os.name == 'posix' else os.sys.platform
-
-st.write(f"作業系統名稱: {os_name}")
-st.write(f"作業系統詳細資訊: {platform_info}")
+# 創建一個按鈕，當按下時觸發上傳動作
+st.button("Upload Database to GitHub", on_click=upload_to_github)
